@@ -81,12 +81,13 @@ public class Interactions {
     }
 
     public static double lireUnDoublePositif() {
-        double i = 0;
+        double i = -1;
         boolean continu = true;
         do {
             try {
                 i = sc.nextDouble();
-                continu = i>=0;
+                if(i>=0)
+                    continu = false;
             } catch (InputMismatchException e) {
                 System.out.print("Veuillez rentrer un chiffre non-nul : ");
                 sc.next();

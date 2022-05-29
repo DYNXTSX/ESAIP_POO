@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class main {
 
     private static Compte c;
-    private static LigneComptable l = new LigneComptable();
 
     public static void main(String[] args){
         int codeMenu = 0;
@@ -66,7 +65,13 @@ public class main {
 
     public static void createLine(){
         System.out.print("\n=> Créer une ligne comptage");
-        c.creerligne();
+        System.out.print("\nRenseigner votre numéro de compte : ");
+        int numCompte = Interactions.lireUnEntier();
+        if(c.getNumero() == numCompte)
+            c.creerligne();
+        else{
+            System.out.print("\nNuméro de compte inconnu...");
+        }
     }
 
 }

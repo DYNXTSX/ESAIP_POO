@@ -2,17 +2,14 @@ import controleur.*;
 import modele.Compte;
 import modele.CompteEpargne;
 import modele.LigneComptable;
-import sun.security.util.ArrayUtil;
 
 import java.util.*;
 
 public class main {
 
-    private static Compte c;
-    private static LigneComptable l = new LigneComptable();
-    private static Compte[] mesComptes;
+    private ArrayList<Compte> mesComptes = new ArrayList<Compte>();
 
-    public static void main(String[] args){
+    public void main(String[] args){
         int codeMenu = 0;
         while (codeMenu != 4){
             codeMenu = Affichages.menuPrincipal();
@@ -32,72 +29,75 @@ public class main {
         }
     }
 
-    private static Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
-    public static void creerCompte(){
+    public void creerCompte(){
         System.out.println("=> Création de compte");
         int sousMenu = Affichages.chooseAccTypeFirst();
         switch(sousMenu){
             case 1 :
                 System.out.println("Compte Epargne");
-                c = new CompteEpargne();
-                c.creerCompte();
-                addCompte(c);
-                tri_bulle(mesComptes);
+                Compte ce = new CompteEpargne();
+                ce.creerCompte();
+                mesComptes.add(ce);
                 break;
             case 2:
                 System.out.println("Compte");
-                c = new Compte();
+                Compte c = new Compte();
                 c.creerCompte();
-                addCompte(c);
-                tri_bulle(mesComptes);
+                mesComptes.add(c);
                 break;
         }
     }
 
-    public static void afficherCompte(){
-        System.out.println(c.getNumero());
+    public void afficherCompte(){
+        int codeErreur = 1;
         System.out.print("\n=> Afficher le compte");
         System.out.print("\nRenseigner votre numéro de compte : ");
         int numCompte = Interactions.lireUnEntier();
-        if(c.getNumero() == numCompte)
-            c.afficherCompte();
-        else{
-            System.out.print("\nNuméro de compte inconnu...");
+        for (Compte compte : mesComptes) {
+            if(compte.getNumero() == numCompte){
+                compte.afficherCompte();
+                codeErreur = 0;
+                break;
+            }
         }
+        if(codeErreur == 1)
+            System.out.println("Numéro de compte inconnu...");
     }
 
-    public static void createLine(){
+    public void createLine(){
+        int codeErreur = 1;
         System.out.print("\n=> Créer une ligne comptage");
-        c.creerLigneComptable();
+        System.out.print("\nRenseigner votre numéro de compte : ");
+        int numCompte = Interactions.lireUnEntier();
+        for (Compte compte : mesComptes) {
+            if(compte.getNumero() == numCompte){
+                compte.creerligne();
+                codeErreur = 0;
+                break;
+            }
+        }
+        if(codeErreur == 1)
+            System.out.println("Numéro de compte inconnu...");
     }
 
-    public static void addCompte(Compte c)
-    {
-        //turn array into ArrayList using asList() method
-        List arrList = new ArrayList( Arrays.asList(mesComptes));
-        // adding a new element to the array
-        arrList.add(c);
-        // Transforming the ArrayList into an array
-        mesComptes = (Compte[]) arrList.toArray(mesComptes);
+    public void ajouterCompteDansListe(Compte c){
+        mesComptes.add(c);
+        Collections.sort(mesComptes);
     }
 
-    static void tri_bulle(Compte[] tab)
-    {
-        int taille = tab.length;
+    public void tri_bulle(ArrayList<Compte> tab) {
+        int taille = tab.size();
         Compte tmp = null;
-        for(int i=0; i < taille; i++)
-        {
-            for(int j=1; j < (taille-i); j++)
-            {
-                if(tab[j-1].getNumero() > tab[j].getNumero())
-                {
+        for(int i=0; i < taille; i++) {
+            for(int j=1; j < (taille-i); j++) {
+                if(tab.get(j - 1).getNumero() > tab.get(j).getNumero()) {
                     //echanges des elements
-                    tmp = tab[j-1];
-                    tab[j-1] = tab[j];
-                    tab[j] = tmp;
+                    tmp = tab.get(j - 1);
+                    tab.set(j - 1, tab.get(j));
+                    tab.set(j, tmp);
                 }
-
             }
         }
     }

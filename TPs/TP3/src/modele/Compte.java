@@ -10,16 +10,16 @@ import java.util.List;
 public class Compte {
     private String type;
     private int numero;
-    private double premierVirement;
-    private double solde =0;
+    private double solde = 0;
     private List<String> list = Arrays.asList("Courant", "Joint");
     private LigneComptable l = null;
+
     public Compte(){}
 
     public Compte(String type, int numero, double premierVirement){
         this.type = type;
         this.numero = numero;
-        this.premierVirement = premierVirement;
+        this.solde = premierVirement;
     }
 
     public int getNumero() {
@@ -28,31 +28,37 @@ public class Compte {
     public String getType() {
         return type;
     }
-    public double getPremierVirement() {
-        return premierVirement;
+    public double getSolde() {
+        return solde;
+    }
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    public void addSolte(double s){
+        this.solde += s;
     }
 
-    public Compte creerCompte(){
+    public void creerCompte(){
         int codeType = Affichages.chooseAccType();
         this.type =list.get(codeType);
         System.out.print("\n==> Quel est votre code de compte : ");
         this.numero = Interactions.lireUnEntier();
         System.out.print("\n==> Quel est le montant de votre premier virement : ");
-        this.premierVirement = Interactions.lireUnDouble();
+        this.solde = Interactions.lireUnDouble();
         System.out.print("\nLe compte est bien créé !\n");
         afficherCompte();
-        return this;
     }
 
-public void creerligne() {
-    l = new LigneComptable();
-    solde = solde +l.creerLigneComptable();
-}
+    public void creerligne() {
+        l = new LigneComptable(this);
+        solde = this.solde + l.creerLigneComptable();
+        System.out.print("\nLe solde de votre compte est maintenant de : "+solde+"€");
+    }
 
     public void afficherCompte(){
         System.out.println(
                 "Type de compte : " + this.type +
                         "\nNuméro de compte : " + this.numero +
-                        "\nPremière valeur : " + this.premierVirement);
+                        "\nSolte : " + this.solde);
     }
 }

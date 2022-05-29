@@ -13,18 +13,18 @@ public class LigneComptable {
     private List<String> motifsList = Arrays.asList("Salaire", "Loyer", "Alimentation", "Divers");
     private List<String> paiementList = Arrays.asList("CB", "Cheque", "Virement");
 
-    private Compte compte;
-    private int numeroCompte;
     private double sommeCrediter;
+    private Compte compteAssoce = null;
     private Date date;
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String motif;
     private String paiement;
 
-    public LigneComptable(){}
+    public LigneComptable(Compte c){
+        this.compteAssoce = c;
+    }
 
-    public LigneComptable(int numeroCompte, double sommeCrediter, Date date, String motif, String paiement){
-        this.numeroCompte = numeroCompte;
+    public LigneComptable(double sommeCrediter, Date date, String motif, String paiement){
         this.sommeCrediter = sommeCrediter;
         this.date = date;
         this.motif = motif;
@@ -33,13 +33,26 @@ public class LigneComptable {
 
     public void afficherLigne(){
         System.out.println(
-                "Numéro de compte : " + this.numeroCompte +
+                "Numéro de compte : " +
                         "\nSomme crédité : " + this.sommeCrediter +
                         "\nDate : " + dateFormat.format(this.date) +
                         "\nMotif : " + this.paiement +
                         "\nMoyen de paiement : " + this.paiement);
     }
 
+    public double  creerLigneComptable(){
+        System.out.print("\nQuel est la somme : ");
+        sommeCrediter = Interactions.lireUnDouble();
+        System.out.print("\nQuel est la date (type : jj/mm/aaaa) : ");
+        setDate(Interactions.lireDate());
+        int motif = Affichages.chooseMotif();
+        setMotif(getMotifsList().get(motif));
+        int paiement = Affichages.choosePaiement();
+        setPaiement(getPaiementList().get(paiement));
+        System.out.print("\nLa ligne comptable est bien créé !\n");
+        afficherLigne();
+        return sommeCrediter;
+    }
     public String getMotif() {
         return motif;
     }
@@ -49,11 +62,11 @@ public class LigneComptable {
     }
 
     public Compte getCompte() {
-        return compte;
+        return compteAssoce;
     }
 
     public int getNumeroCompte() {
-        return numeroCompte;
+        return compteAssoce.getNumero();
     }
 
     public double getSommeCrediter() {
@@ -72,12 +85,8 @@ public class LigneComptable {
         return paiement;
     }
 
-    public void setNumeroCompte(int numeroCompte) {
-        this.numeroCompte = numeroCompte;
-    }
-
     public void setCompte(Compte compte) {
-        this.compte = compte;
+        this.compteAssoce = compte;
     }
 
     public void setDate(Date date) {

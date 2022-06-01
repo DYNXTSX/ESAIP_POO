@@ -33,11 +33,11 @@ public class LigneComptable {
 
     public void afficherLigne(){
         System.out.println(
-                "Numéro de compte : " +
-                        "\nSomme crédité : " + this.sommeCrediter +
+                        "Somme crédité : " + this.sommeCrediter +
                         "\nDate : " + dateFormat.format(this.date) +
                         "\nMotif : " + this.paiement +
-                        "\nMoyen de paiement : " + this.paiement);
+                        "\nMoyen de paiement : " + this.paiement+
+                        "\n===============");
     }
 
     public double  creerLigneComptable(){
@@ -53,6 +53,7 @@ public class LigneComptable {
         afficherLigne();
         return sommeCrediter;
     }
+
     public String getMotif() {
         return motif;
     }
@@ -112,4 +113,7 @@ public class LigneComptable {
     public void setSommeCrediter(double sommeCrediter) {
         this.sommeCrediter = sommeCrediter;
     }
+
+
+
 }

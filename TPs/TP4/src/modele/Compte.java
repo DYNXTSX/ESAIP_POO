@@ -54,7 +54,15 @@ public class Compte implements Comparable <Compte>{
     public void creerligne() {
         LigneComptable l = new LigneComptable(this);
         solde = this.solde + l.creerLigneComptable();
-        System.out.print("\nLe solde de votre compte est maintenant de : "+solde+"€");
+        ajouterLigneDansListe(l);
+        System.out.println("\nLe solde de votre compte est maintenant de : "+solde+"€");
+    }
+
+    public void creerligneTest(double sommeCrediter, Date date, String motif, String paiement) {
+        LigneComptable l = new LigneComptable(sommeCrediter, date, motif, paiement);
+        solde = this.solde + l.getSommeCrediter();
+        ajouterLigneDansListe(l);
+        System.out.println("\nLe solde de votre compte est maintenant de : "+solde+"€");
     }
 
     /**
@@ -70,7 +78,7 @@ public class Compte implements Comparable <Compte>{
         System.out.println(
                 "Type de compte : " + this.type +
                         "\nNuméro de compte : " + this.numero +
-                        "\nSolte : " + this.solde);
+                        "\nSolde : " + this.solde);
         afficherLigneComptables();
     }
 

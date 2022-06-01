@@ -3,51 +3,52 @@ package tests;
 import modele.Compte;
 import modele.LigneComptable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TestCompte {
-    public static void main(String[] args){
+    public static void main(String[] args) throws ParseException {
         TestCompte testCompte = new TestCompte();
-        Integer[] test = new Integer[10];
-        test[0] = 0;
-        test[1] = 1;
-        test[2] = 2;
-        test[3] = 3;
-        test[4] = 4;
-        test[5] = 5;
-        test[6] = 6;
-        test[7] = 7;
-        test[8] = 8;
-        test[9] = 9;
-
-        for(int i=1; i<10; i++){
-            test[i-1] = test[i];
-        }
-
-        for(int i=0; i<10; i++){
-            System.out.println(test[i]);
-        }
-
-        //test1();
-        //test2();
-        //test3();
-        //test4();
+        //test1()
+        test2();
     }
-    /*
-    public static void test1(){
-        System.out.println("TEST DU CONSTRUCTEUR COMPTE");
-        Compte leCompte = new Compte("Courant", 6, 10.62);
+
+    public static void test1() throws ParseException {
+        System.out.println("TEST DU CONSTRUCTEUR COMPTE ET UNE LIGNE COMPTABLE");
+        Compte leCompte = new Compte("Courant", 6, 10.6);
         Test.test(leCompte.getNumero() == 6,"test du numéro de compte");
         Test.test(leCompte.getType().equals("Courant"),"test type de compte");
-        Test.test(leCompte.getSolde() == 10.62,"test du premier virement");
-
+        Test.test(leCompte.getSolde() == 10.6,"test du premier virement");
+        //Ligne comptable
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = f.parse("01/03/2001");
+        leCompte.creerligneTest(10,date, "Salaire", "CB");
+        leCompte.afficherCompte();
+        Test.test(leCompte.getSolde() == 20.6,"test du nouveau solde");
     }
 
-    public static void test2(){
-        System.out.println("TEST DU CONSTRUCTEUR COMPTE PAR L'UTILISATEUR");
-        Compte leCompte = new Compte();
-        leCompte.creerCompte();
+    public static void test2() throws ParseException {
+        System.out.println("TEST DE PLUSIEURS LIGNES COMPTABLES");
+        Compte leCompte = new Compte("Courant", 7, 500);
+        Test.test(leCompte.getNumero() == 7,"test du numéro de compte");
+        Test.test(leCompte.getSolde() == 10.6,"test du premier virement");
+
+        //Ligne comptable n°1
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = f.parse("01/03/2001");
+        leCompte.creerligneTest(10,date, "Salaire", "CB");
+
+        //Ligne comptable n°2
+        SimpleDateFormat f2 = new SimpleDateFormat("dd/MM/yyyy");
+        Date date2 = f2.parse("17/06/2021");
+        leCompte.creerligneTest(66.1,date2, "Loyer", "Virement");
+
+        //Ligne comptable n°1
+        SimpleDateFormat f3 = new SimpleDateFormat("dd/MM/yyyy");
+        Date date3 = f3.parse("06/06/2022");
+        leCompte.creerligneTest(13.8,date3, "Divers", "CB");
+
         leCompte.afficherCompte();
     }
-     */
 }

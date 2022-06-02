@@ -3,11 +3,13 @@ import modele.Compte;
 import modele.CompteEpargne;
 import modele.LigneComptable;
 
+import java.sql.Connection;
 import java.util.*;
 
 public class main {
 
     private ArrayList<Compte> mesComptes = new ArrayList<Compte>();
+    static Connection cnx;
 
     public void main(String[] args){
         int codeMenu = 0;

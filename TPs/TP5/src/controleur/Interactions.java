@@ -56,6 +56,10 @@ public class Interactions {
         return i;
     }
 
+    /**
+     * Méthode pour lire un Float
+     * @return => Le float entré par l'utilisateur
+     */
     public static float lireUnFloat() {
         float i = 0;
         boolean continu = true;
@@ -71,6 +75,10 @@ public class Interactions {
         return i;
     }
 
+    /**
+     * Méthode pour lire un Double
+     * @return => Le double entré par l'utilisateur
+     */
     public static double lireUnDouble() {
         double i = 0;
         boolean continu = true;
@@ -86,6 +94,10 @@ public class Interactions {
         return i;
     }
 
+    /**
+     * Méthode pour lire un Double positif
+     * @return => Le double positif par l'utilisateur
+     */
     public static double lireUnDoublePositif() {
         double i = -1;
         boolean continu = true;
@@ -102,6 +114,10 @@ public class Interactions {
         return i;
     }
 
+    /**
+     * Méthode pour lire une date dans un format demandé
+     * @return => La date entrée par l'utilisateur
+     */
     public static Date lireDate() {
         boolean continu = true;
         Date date = null;
@@ -120,75 +136,4 @@ public class Interactions {
         } while (continu);
         return date;
     }
-
-    /* BDD */
-    public static Connection connecterDB(){
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Driver oki");
-            String url="jdbc:mysql://localhost:3306/db_gstproduit";
-            String user="root";
-            String password="";
-            Connection cnx= DriverManager.getConnection(url,user,password);
-            System.out.println("Connexion bien établie");
-            return cnx;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void AjouterCompte(Compte c, Connection cnx, Statement st){
-        try{
-            String query = null;
-            if(c instanceof CompteEpargne)
-                query="INSERT INTO compte VALUES("+c.getType()+",'"+c.getNumero()+"',"+c.getSolde()+","+((CompteEpargne) c).getTaux()+")";
-            else
-                query="INSERT INTO compte VALUES("+c.getType()+",'"+c.getNumero()+"',"+c.getSolde()+")";
-
-            cnx=connecterDB();
-            st=cnx.createStatement();
-            st.executeUpdate(query);
-            System.out.println("Compte bien ajouté");
-
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static void AjouterLigneCompta(LigneComptable l, Connection cnx, Statement st){
-        try{
-            String query = null;
-            query="INSERT INTO compte VALUES("+l.getCompte().getNumero()+","+l.getSommeCrediter()+","+l.getDate()+",'"+l.getMotif()+"','"+l.getPaiement()+"')";
-            cnx=connecterDB();
-            st=cnx.createStatement();
-            st.executeUpdate(query);
-            System.out.println("Compte bien ajouté");
-
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static void recherchePparLibelle(String libelle){
-        try{
-            String query="SELECT * FROM tb_produit WHERE libelle='"+libelle+"'";
-            cnx=connecterDB();
-            st=cnx.createStatement();
-            rst= st.executeQuery(query);
-            rst.last();
-            int nbrRow = rst.getRow();
-            if(nbrRow!=0){
-                System.out.println("Produit trouve");
-            }else{
-                System.out.println("Produit non trouve");
-            }
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-
-    }
-
-
-
 }

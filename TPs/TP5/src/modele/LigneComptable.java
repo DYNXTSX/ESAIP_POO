@@ -1,6 +1,7 @@
 package modele;
 
 import controleur.Affichages;
+import controleur.Bdd;
 import controleur.Interactions;
 
 import java.text.DateFormat;
@@ -54,12 +55,16 @@ public class LigneComptable {
         return sommeCrediter;
     }
 
+    public void ajoutLigneBdd(){
+        Bdd.AjouterLigneCompta(this);
+    }
+
     public String getMotif() {
         return motif;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return dateFormat.format(this.date).toString();
     }
 
     public Compte getCompte() {

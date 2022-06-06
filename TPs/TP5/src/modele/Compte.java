@@ -1,6 +1,7 @@
 package modele;
 
 import controleur.Affichages;
+import controleur.Bdd;
 import controleur.Interactions;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Compte implements Comparable <Compte>{
         this.mesLignes = new ArrayList<LigneComptable>();
     }
 
+    /*GET/SET*/
     public int getNumero() {
         return numero;
     }
@@ -40,6 +42,9 @@ public class Compte implements Comparable <Compte>{
         this.solde += s;
     }
 
+    /**
+     * Méthode pour créer un compte
+     */
     public void creerCompte(){
         int codeType = Affichages.chooseAccType();
         this.type =list.get(codeType);
@@ -47,33 +52,58 @@ public class Compte implements Comparable <Compte>{
         this.numero = Interactions.lireUnEntier();
         System.out.print("\n==> Quel est le montant de votre premier virement : ");
         this.solde = Interactions.lireUnDouble();
+        ajoutCompteBdd();
         System.out.print("\nLe compte est bien créé !\n");
         afficherCompte();
     }
 
+    /**
+     * Méthode pour ajouter le compte dans la BDD
+     */
+    public void ajoutCompteBdd(){
+        Bdd.AjouterCompte(this);
+    }
+
+    /**
+     * Méthode pour créer une ligne comptable au compte (par l'utilisateur)
+     */
     public void creerligne() {
         LigneComptable l = new LigneComptable(this);
         solde = this.solde + l.creerLigneComptable();
         ajouterLigneDansListe(l);
+        l.ajoutLigneBdd();
         System.out.println("\nLe solde de votre compte est maintenant de : "+solde+"€");
     }
 
+    /**
+     * Méthode pour créer une ligen comptage (partie test)
+     * @param sommeCrediter
+     * @param date
+     * @param motif
+     * @param paiement
+     */
     public void creerligneTest(double sommeCrediter, Date date, String motif, String paiement) {
         LigneComptable l = new LigneComptable(sommeCrediter, date, motif, paiement);
+        l.setCompte(this);
         solde = this.solde + l.getSommeCrediter();
         ajouterLigneDansListe(l);
+        Bdd.MAJSolde(this);
+        l.ajoutLigneBdd();
         System.out.println("\nLe solde de votre compte est maintenant de : "+solde+"€");
     }
 
     /**
      * [0] ==> La plus ancienne
      * [9] ==> La plus récente
-     * @param l
+     * @param l => ligne comptable
      */
     public void ajouterLigneDansListe(LigneComptable l){
         mesLignes.add(l);
     }
 
+    /**
+     * Méthode pour afficher le compte (compte + lignes comptables)
+     */
     public void afficherCompte(){
         System.out.println(
                 "Type de compte : " + this.type +
@@ -82,6 +112,9 @@ public class Compte implements Comparable <Compte>{
         afficherLigneComptables();
     }
 
+    /**
+     * Méthode pour afficher les lignes comptables du compte
+     */
     public void afficherLigneComptables(){
         System.out.println("===============");
         System.out.println("Lignes comptables :");

@@ -1,16 +1,22 @@
 package modele;
 
 import controleur.Affichages;
+import controleur.Bdd;
 import controleur.Interactions;
 
 public class CompteEpargne extends Compte {
     private double taux;
     private String type;
 
+    /*Constructeurs*/
     public CompteEpargne(){}
     public CompteEpargne(int numero, double premierVirement){
         super("Epargne", numero ,premierVirement);
         controleTaux();
+    }
+    public CompteEpargne(int numero, double premierVirement, double taux){
+        super("Epargne", numero ,premierVirement);
+        this.taux = taux;
     }
 
     public double getTaux() {
@@ -34,6 +40,7 @@ public class CompteEpargne extends Compte {
         System.out.print("\n==> Quel est le montant de votre premier virement : ");
         addSolte(Interactions.lireUnDouble());
         controleTaux();
+        Bdd.AjouterCompte(this);
         System.out.print("\nLe compte est bien créé !\n");
         afficherCompte();
     }
